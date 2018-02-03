@@ -12,6 +12,7 @@ POSITIONS = (
     ('Sergeant at Arms', 'Sergeant at Arms'),
 )
 
+
 # Create your models here.
 class BaseModel(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
@@ -35,4 +36,4 @@ class UserData(BaseModel):
     mentor = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='+', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return self.month_year
+        return self.user
