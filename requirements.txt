@@ -1,0 +1,6 @@
+Django<12
+djangorestframework
+djangorestframework-jwt
+django-cors-headers
+pymongo
+gunicorn
