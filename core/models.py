@@ -12,6 +12,19 @@ POSITIONS = (
     ('Sergeant at Arms', 'Sergeant at Arms'),
 )
 
+ROLES = (
+    ('Evaluator', 'Evaluator'),
+    ('TMOD', 'TMOD'),
+    ('GE', 'GE'),
+    ('TTM', 'TTM'),
+    ('Timer', 'Timer'),
+    ('Ah-Counter', 'Ah-Counter'),
+    ('Grammarian', 'Grammarian'),
+    ('Parliamentarian', 'Parliamentarian'),
+)
+
+CLUB_NAME = 'GTMC'
+
 
 # Create your models here.
 class BaseModel(models.Model):
@@ -23,9 +36,9 @@ class BaseModel(models.Model):
         abstract = True
 
 
-###################################################################################################
+########################################################################################################################
 # User
-###################################################################################################
+########################################################################################################################
 
 class UserData(BaseModel):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -37,3 +50,28 @@ class UserData(BaseModel):
 
     def __str__(self):
         return self.user
+
+
+########################################################################################################################
+# Meeting
+########################################################################################################################
+
+class Meeting(BaseModel):
+    number = models.PositiveSmallIntegerField()
+    date = models.DateField()
+    club_name = models.CharField(default=CLUB_NAME, max_length=30)
+    home_club = models.BooleanField(default=False)
+
+
+class Speech(BaseModel):
+    meeting = models.ForeignKey('Meeting', related_name='+', on_delete=models.PROTECT)
+    speaker = models.ForeignKey('UserData', related_name='+', on_delete=models.PROTECT)
+    topic = models.CharField(max_length=30)
+    number = models.PositiveSmallIntegerField()
+    evaluator = models.ForeignKey('UserData', related_name='+', on_delete=models.PROTECT, null=True)
+
+
+class Role(BaseModel):
+    meeting = models.ForeignKey('Meeting', related_name='+', on_delete=models.PROTECT)
+    role_player = models.ForeignKey('UserData', related_name='+', on_delete=models.PROTECT)
+    role = models.CharField(max_length=15, choices=ROLES)
