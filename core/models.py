@@ -23,6 +23,13 @@ ROLES = (
     ('Parliamentarian', 'Parliamentarian'),
 )
 
+VOTING_CATEGORIES = (
+    ('Best Speaker', 'Best Speaker'),
+    ('Best Evaluator', 'Best Evaluator'),
+    ('Best Role Player', 'Best Role Player'),
+    ('Best Supplementary Role Player', 'Best Supplementary Role Player')
+)
+
 CLUB_NAME = 'GTMC'
 
 
@@ -68,6 +75,7 @@ class Speech(BaseModel):
     speaker = models.ForeignKey('UserData', related_name='+', on_delete=models.PROTECT)
     topic = models.CharField(max_length=30)
     number = models.PositiveSmallIntegerField()
+    order = models.PositiveSmallIntegerField()
     evaluator = models.ForeignKey('UserData', related_name='+', on_delete=models.PROTECT, null=True)
 
 
@@ -75,3 +83,12 @@ class Role(BaseModel):
     meeting = models.ForeignKey('Meeting', related_name='+', on_delete=models.PROTECT)
     role_player = models.ForeignKey('UserData', related_name='+', on_delete=models.PROTECT)
     role = models.CharField(max_length=15, choices=ROLES)
+
+
+########################################################################################################################
+# Voting
+########################################################################################################################
+
+class Winners(BaseModel):
+    meeting = models.ForeignKey('Meeting', related_name='+', on_delete=models.PROTECT)
+    category = models.CharField(max_length=30, choices=VOTING_CATEGORIES)
