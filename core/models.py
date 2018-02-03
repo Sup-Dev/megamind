@@ -66,8 +66,12 @@ class UserData(BaseModel):
 class Meeting(BaseModel):
     number = models.PositiveSmallIntegerField()
     date = models.DateField()
+    theme = models.CharField(default='', max_length=50)
     club_name = models.CharField(default=CLUB_NAME, max_length=30)
     home_club = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.number) + ' - ' + self.club_name
 
 
 class Speech(BaseModel):
